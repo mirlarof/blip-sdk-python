@@ -1,0 +1,33 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: pypi-sample-variables
+
+resources:
+  repositories:   
+  - repository: templates
+    type: git
+    name: Operações/template-take-blip
+    ref: refs/heads/feature/python-new
+
+extends:
+  template: template-pipeline.yml@templates    
+  parameters:    
+    packagename: blip-sdk-python
+    type: python
+    to: pypi
+    pythonCmds:
+    - python -m pip install --upgrade pip
+    - python -m pip install pipenv
+    - pipenv lock -r > requirements.txt
+    - pip install -r requirements.txt
+    - pip install setuptools wheel twine
