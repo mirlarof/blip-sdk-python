@@ -31,3 +31,5 @@ extends:
     - pipenv lock -r > requirements.txt
     - pip install -r requirements.txt
     - pip install setuptools wheel twine
+    - python setup.py sdist bdist_wheel
+    - python -m twine upload --skip-existing dist/*
